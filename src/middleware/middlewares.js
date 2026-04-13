@@ -1,4 +1,4 @@
-import { env } from "./env.js";
+import { env } from "../env.js";
 
 export function notFound(req, res, next) {
   res.status(404);

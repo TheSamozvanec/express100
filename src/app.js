@@ -2,13 +2,13 @@ import cors from "cors";
 import express from "express";
 import morgan from "morgan";
 import debugLib from "debug";
+import { ConnetcDB } from "./config/database.js";
+import * as middlewares from "./middleware/middlewares.js";
 
 const debug = debugLib('exp:src:app');
+//____________________________
 
-import api from "./api/index.js";
-
-import * as middlewares from "./middlewares.js";
-
+await ConnetcDB();
 const app = express();
 
 app.use(morgan("dev"));
@@ -17,11 +17,10 @@ app.use(express.json());
 
 app.get("/", (req, res) => {
   res.json({
-    message: "🦄🌈✨👋🌎🌍🌏✨🌈🦄",
+    message: "Стартовал!!!",
   });
 });
 
-app.use("/api/v1", api);
 
 app.use(middlewares.notFound);
 app.use(middlewares.errorHandler);
