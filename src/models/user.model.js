@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../config/database.js";
 const User = sequelize.define('User',{
-    userId:{
+    user_id:{
         type:DataTypes.INTEGER,
         primaryKey:true,
         autoIncrement:true
@@ -9,6 +9,7 @@ const User = sequelize.define('User',{
     login:{
         type:DataTypes.STRING(16),
         allowNull:false,
+        unique:true,
     },
     password:{
         type:DataTypes.STRING,

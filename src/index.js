@@ -1,8 +1,11 @@
 import app from "./app.js";
+import '../src/models/index.js'; // для иннициализации моделей в sequelize
+import { ConnectDB } from "./config/database.js";
 import { env } from "./env.js";
 import debugLib from 'debug'
 
-const debug =debugLib('exp:src:index')
+const debug =debugLib('exp:src:index');
+await ConnectDB();
 const server = app.listen(env.PORT, () => {
   debug(`Listening: http://localhost:${env.PORT}`);
 });

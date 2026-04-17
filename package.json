@@ -13,8 +13,12 @@
   "main": "src/index.js",
   "scripts": {
     "start": "DEBUG=exp:* node --env-file=.env src/index.js",
-    "dev": "DEBUG=exp:* nodemon --exec \"node --inspect --env-file=.env src/index.js\"",
-    "dbSync": "DEBUG=exp:* node --env-file=.env scripts/create.js"
+    "dev": "DEBUG=exp:* nodemon --exec \"node --env-file=.env src/index.js\"",
+    "dbSync": "DEBUG=exp:* node --env-file=.env scripts/create.js",
+    "testModel": "mkdir -p logs && DEBUG=exp:* node --env-file=.env scripts/model.test.js 2>&1 | tee logs/testModel.log",
+    "testRep": "mkdir -p logs && DEBUG=exp:* node --env-file=.env scripts/repository.test.js 2>&1 | tee logs/testRep.log",
+    "testModel:ts": "mkdir -p logs && DEBUG=exp:* node --env-file=.env scripts/model.test.js 2>&1 | tee logs/testModel_$(date +%Y%m%d_%H%M%S).log",
+    "testRep:ts": "mkdir -p logs && DEBUG=exp:* node --env-file=.env scripts/repository.test.js 2>&1 | tee logs/testRep_$(date +%Y%m%d_%H%M%S).log"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",

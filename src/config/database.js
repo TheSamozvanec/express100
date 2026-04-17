@@ -31,7 +31,7 @@ export const sequelize = new Sequelize(
     }
 );
 // подключение к db
-export async function ConnetcDB() {
+export async function ConnectDB() {
     try {
         await sequelize.authenticate();
         debug('Подключение к PostgreSQL успешно установлено!');    

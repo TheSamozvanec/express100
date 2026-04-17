@@ -2,12 +2,12 @@ import { DataTypes } from "sequelize";
 import { sequelize } from "../config/database.js";
 import User from "./user.model.js";
 const Thing = sequelize.define('Thing',{
-    thingId:{
+    thing_id:{
         type:DataTypes.INTEGER,
         primaryKey:true,
         autoIncrement:true
     },
-    userId:{
+    user_id:{
         type:DataTypes.INTEGER,
         allowNull:false,
         references:{
