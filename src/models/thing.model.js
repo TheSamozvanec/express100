@@ -19,7 +19,11 @@ const Thing = sequelize.define('Thing',{
     },
     name:{
         type:DataTypes.STRING(16),
-        allowNull:false
+        allowNull:false,
+        validate:{
+            notEmpty:true,
+            len:[3,16]
+        }
     },
     description:{
         type:DataTypes.STRING,
