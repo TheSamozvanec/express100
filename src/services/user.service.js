@@ -48,7 +48,7 @@ class UserService {
     }
     
     async delete(id, usr) {
-        if (usr.user_id!==id && !usr.is_admin) return {message:'Доступ запрещен!!!', status:403}
+        if (+usr.user_id!==+id && !usr.is_admin) return {message:'Доступ запрещен!!!', status:403}
         const user = await userRepository.delete(id)
         if(!user) return {message:'Такого пользователя не существует!', status:404};
         return user.toJSON();

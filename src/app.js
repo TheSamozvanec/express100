@@ -4,7 +4,8 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import debugLib from "debug";
-import { ConnectDB, handlebars } from "./config/database.js";
+import { handlebars } from "./config/database.js";
+import userRouter from "./routes/user.routes.js";
 import * as middlewares from "./middleware/middlewares.js";
 import __dirname from "../dirname.js"
 
@@ -23,7 +24,9 @@ app.engine('hbs',handlebars.engine);
 app.set('view engine','hbs');
 app.use(cookieParser()); // куки
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(middlewares.kostyl)
 
+app.use('/api/user',userRouter);
 app.get("/", (req, res) => {
   res.render('index');
 });
