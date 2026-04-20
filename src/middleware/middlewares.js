@@ -11,7 +11,7 @@ const usr = {
   login:'user05',
   name:'USER555',
 }
-export function kostyl (req, res, next) {
+export function kostyl (req, res, next) { //костыльная авторизация
   req.user = {...adm}
   next()
 }
