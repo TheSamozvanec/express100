@@ -19,10 +19,10 @@ try {
 }
 catch (error) {
   if (error instanceof z.ZodError) {
-    console.error("Missing environment variables:", error.issues.flatMap(issue => issue.path));
+    debug("Missing environment variables:", error.issues.flatMap(issue => issue.path));
   }
   else {
-    console.error(error);
+    debug(error);
   }
   process.exit(1);
 }

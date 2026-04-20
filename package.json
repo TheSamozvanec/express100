@@ -20,6 +20,7 @@
     "testMod": "pnpm testMod:c && pnpm testMod:s",
     "testRep": "pnpm testRep:c && pnpm testRep:s",
     "testSrv": "pnpm testSrv:c && pnpm testSrv:s",
+    "testCtrl": "pnpm testCtrl:c && pnpm testCtrl:s",
 
     "testMod:c": "DEBUG=exp:* node --env-file=.env scripts/model.test.js",
     "testMod:s": "mkdir -p logs && DEBUG=exp:* node --env-file=.env scripts/model.test.js > logs/testModel.log 2>&1",
@@ -28,7 +29,10 @@
     "testRep:s": "mkdir -p logs && DEBUG=exp:* node --env-file=.env scripts/repository.test.js > logs/testRepository.log 2>&1",
 
     "testSrv:c": "DEBUG=exp:* node --env-file=.env scripts/service.test.js",
-    "testSrv:s": "mkdir -p logs && DEBUG=exp:* node --env-file=.env scripts/service.test.js > logs/testService.log 2>&1"
+    "testSrv:s": "mkdir -p logs && DEBUG=exp:* node --env-file=.env scripts/service.test.js > logs/testService.log 2>&1",
+
+    "testCtrl:c": "DEBUG=exp:* node --env-file=.env scripts/controller.test.js",
+    "testCtrl:s": "mkdir -p logs && DEBUG=exp:* node --env-file=.env scripts/controller.test.js > logs/testController.log 2>&1"
   },
 
   "dependencies": {
