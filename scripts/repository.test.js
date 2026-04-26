@@ -13,7 +13,7 @@ try{
     debug('Подключение к db');
     debug('-----------------------------------------------------');
 
-    await User(); 
+    // await User(); 
     await Thing();
 
 } catch (err) {
@@ -28,10 +28,10 @@ async function User() {
     debUser('\n\nТесты репозиториев пользователя\n');
     debThing('-----------------------------------------------------');
 
-    // все пользователи (не админ)
-    const users = await userRepository.getAll();
-    debUser('\nTest №1 getAll\n', users.map(u=>u.toJSON()));
-    debug('-----------------------------------------------------');
+    // // все пользователи (не админ)
+    // const users = await userRepository.getAll();
+    // debUser('\nTest №1 getAll\n', users.map(u=>u.toJSON()));
+    // debug('-----------------------------------------------------');
 
     // один пользователь (любой/ не админ)
     const userById = await userRepository.getById(5);
@@ -74,10 +74,10 @@ async function User() {
     // debUser ('\nTest №5 delete\n', del?.toJSON());
     // debug('-----------------------------------------------------');
 
-    // получить всех (только админ)
-    const usersAdm = await userRepository.getAllAdm();
-    debUser ('\nTest №6 getAllAdm\n', usersAdm.map(u=>u.toJSON()));
-    debug('-----------------------------------------------------');
+    // // получить всех (только админ)
+    // const usersAdm = await userRepository.getAllAdm();
+    // debUser ('\nTest №6 getAllAdm\n', usersAdm.map(u=>u.toJSON()));
+    // debug('-----------------------------------------------------');
 
     // один пользователь (админ / индивидуально)
     const userIdAdm = await userRepository.getByIdAdm(5);
@@ -98,6 +98,38 @@ async function User() {
     const userWithThings = await userRepository.getUserWithThings(5);
     debUser ('\nTest №8 getUserWithThings\n', userWithThings?.toJSON());
     debug('-----------------------------------------------------');
+
+    // // массив id пользователей тест транзакций
+    // const userData = {
+    //     name:'Мотаро',
+    //     }
+    // let transaction = await sequelize.transaction();
+    // try {
+        
+    //     const chek = await userRepository.chekUsers([5,9,6], transaction);
+
+    //     const newUser = await userRepository.create(userData, transaction);
+
+    //     debUser('length:', chekArray.length);
+      
+    //     if(chekArray.length<3) {
+
+    //         await transaction.rollback();
+    //         debUser('>>>>>>>>>>>>>>>>>>МАЛО!!!>>>>>>>>>>>>>>>>');
+
+    //     } else {
+
+    //         await transaction.commit();
+    //         debUser ('\nTest №9 getUserWithThings\n', chekArray.map(u=>u.toJSON()));
+    //         debUser('USER>>>>>>>>>>>>>>>>',newUser.toJSON())
+    //         debug('-----------------------------------------------------');
+    //     }
+        
+    // } catch(err) {
+    //     await transaction.rollback()
+    //     debUser('>>>>>>>>>>>>>>',transaction.finished)
+    //     errors(err)
+    // }
 }
 
 async function Thing() {

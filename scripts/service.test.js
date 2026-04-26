@@ -2,20 +2,25 @@ import debugLib from "debug";
 import {sequelize} from "../src/models/index.js";
 import userService from "../src/services/user.service.js";
 import thingService from "../src/services/thing.service.js";
+import authService from "../src/services/auth.service.js";
+import { email } from "zod";
 
 
 const debug=debugLib('exp:tests:service');
 const errors=debugLib('exp:tests:ERROR');
 const debUser = debugLib('exp:tests:User');
 const debThing = debugLib('exp:tests:Thing');
+const debAuth = debugLib ('exp:tests:Auth');
+
 debug('Тест сервисов');
 try{
     // подключение к db
     sequelize.authenticate();
     debug('Авторизация в базе данных'); 
     debug('-----------------------------------------------------');
-    await User();
+    // await User();
     await Things();
+    //await Auth()
 } catch (err) {
     errors(err);
 } finally {
@@ -47,9 +52,9 @@ async function User() {
 
     // // сздать пользователя
     // const newUsr = {
-    //     login:'user05',
+    //     login:'user050',
     //     password:'zxcv',
-    //     email:'user05@mail.cheb',
+    //     email:'user050@mail.cheb',
     //     name:'',
     //     description:'',
     //     //is_admin:true,
@@ -157,5 +162,28 @@ async function Things() {
     const delThing = await thingService.delete(23, usr)
     debThing('\nТест №6 delete\n', delThing);
     debug('-----------------------------------------------------');
+
+}
+async function Auth() {
+    debug('-----------------------------------------------------');
+    debUser('\n\nСервис авторизации\n');
+    debug('-----------------------------------------------------');
+    // данные о пользователе (мок)
+    const usr = {
+     //   user_id:6,  // важная настройка сервиса User
+        login:'Puser777', // необязательная настройка сервиса
+        email:'user777@puser.su',
+        //name:'Samozvanec', // не обязательная настройка сервиса
+        password:'qwer'
+        //is_admin:true // Самая важная настройка (если нет - не админ)
+    }
+    // const sigIn = await authService.sigIn(usr);
+    // debAuth('\n\nТест №1 sigIn\n', sigIn);
+    // debug('-----------------------------------------------------');
+
+    const sigOut = await authService.signOut(usr)
+    debAuth('\n\nТест №2 sigOut\n', sigOut);
+    debug('-----------------------------------------------------');
+
 
 }

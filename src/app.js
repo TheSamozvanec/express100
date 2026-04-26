@@ -6,14 +6,15 @@ import morgan from "morgan";
 import debugLib from "debug";
 import { handlebars } from "./config/database.js";
 import userRouter from "./routes/user.routes.js";
+import authRouter from "./routes/auth.routes.js";
 import * as middlewares from "./middleware/middlewares.js";
 import __dirname from "../dirname.js"
 
-const debug = debugLib('exp:src:app');
+const debug = debugLib('exp:src:--APP--');
 //____________________________
-debug('dirname:',__dirname);
+debug('dirname:\n',__dirname);
 //____________________________
-// await ConnectDB();
+
 const app = express();
 app.use(morgan("dev"));
 app.use(cors());
@@ -24,9 +25,13 @@ app.engine('hbs',handlebars.engine);
 app.set('view engine','hbs');
 app.use(cookieParser()); // куки
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(middlewares.kostyl)
 
+app.use(middlewares.hasAuth);
+// app.use(middlewares.kostyl)
+
+app.use('/api/auth',authRouter);
 app.use('/api/user',userRouter);
+
 app.get("/", (req, res) => {
   res.render('index');
 });
@@ -34,6 +39,6 @@ app.get("/", (req, res) => {
 
 app.use(middlewares.notFound);
 app.use(middlewares.errorHandler);
-debug ('app init!!!')
+debug ('app init!!!');
 
 export default app;

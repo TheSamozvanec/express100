@@ -1,7 +1,7 @@
 const whiteList = [
-    '/auth/sign-in',
-    '/auth/create-new',
-    '/auth/logaut',
+    '/api/auth/sign-in',
+    '/api/auth/sign-out',
+    '/api/auth/logaut',
     '/',
     '/page/'
 ]

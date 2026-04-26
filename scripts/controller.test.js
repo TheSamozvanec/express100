@@ -1,44 +1,29 @@
 import debugLib from "debug";
 import {sequelize} from "../src/models/index.js";
 import userController from "../src/controllers/user.controller.js";
+import authController from "../src/controllers/auth.controller.js";
+import thingController from "../src/controllers/thing.controller.js";
+
 
 const debug=debugLib('exp:tests:controller');
 const errors=debugLib('exp:tests:ERROR');
 const debUser = debugLib('exp:tests:User');
 const debThing = debugLib('exp:tests:Thing');
-debug('Тест контроллеров');
-try{
-    // подключение к db
-    sequelize.authenticate();
-    debug('Авторизация в базе данных'); 
-    debug('-----------------------------------------------------');
+const debAuth = debugLib('exp:tests:Auth');
 
-    await User();
-   // await Things();
-
-} catch (err) {
-    errors(err);
-} finally {
-    await sequelize.close();
-    debug('Закрытие соединения с db');
-    process.exit(0);
-}
-async function User(){
-    debug('-----------------------------------------------------');
-    debUser('\n\nТест кнтроллера пользователя\n')
-    debug('-----------------------------------------------------');
-    const adm = {
+//________________входные данные req (эмуляция)
+const adm = {
         user_id:5,
         login:'main',
         name:'Samozvanec',
         is_admin:true
     }
-    const usr = {
-        user_id:7,
+const usr = {
+        user_id:16,
         login:'user02',
         name:'Petya',
     }
-    const utest = {
+const utest = {
         login:'Puser007',
         email:'Puser007@mail.cheb',
         password:'qwer',
@@ -46,13 +31,33 @@ async function User(){
         description:'не еврейский',
         is_admin:true
     }
-    let test
-    const req = {
-        user:{...adm}, // adm / usr
-        params:{id:19}, // номер
-        body:{email:'user05@mail.cheb', login:'user004'} // ...utest / email / login
+const ttest =[
+    {
+        name:'test thing15',
+        description:'test many adm',
+        user_id:5
+    },
+    {
+        name:'test thing16',
+        description:'test many adm',
+        user_id:8
+    },
+    {
+        name:'test thing17',
+        description:'test many adm',
+        user_id:9
     }
-    const res ={
+    
+] 
+   
+//__________________псевдофункции (эмуляция)
+let test
+const req = {
+        user:{...usr}, // adm / usr
+        params:{id:25}, // номер
+        body:{name:'ножка от коня', description:'чтоб отпинываться', user_id:25}
+    }
+const res ={
         statusCode:200,
         flag:false,
         json(obj){
@@ -70,13 +75,47 @@ async function User(){
         status(n){
             this.flag=true;
             this.statusCode=n;
+            debUser('status:', this.statusCode, 'flag>>>>>>>', this.flag);
             return this;
+        },
+
+        cookie (name, token, params) {
+            debAuth ('SEND COOKIE: ', name, token, params);
+        },
+
+        clearCookie (name) {
+            debAuth ('CLEAR COOKIE', name)
         }
     }
-    const next = (error)=> {
-        debUser ('\n\nТест №',test,'\n',error)
+const next = (error)=> {
+        debUser ('\n\nТест №',test,'\n','status:'+res.statusCode,'next(err) Error:'+error.message);
+        res.flag=false;
         debug('-----------------------------------------------------');
     }
+
+debug('Тест контроллеров');
+try{
+    // подключение к db
+    sequelize.authenticate();
+    debug('Авторизация в базе данных'); 
+    debug('-----------------------------------------------------');
+
+    // await User();
+    await Things();
+    // await Auth();
+
+} catch (err) {
+    errors(err);
+} finally {
+    await sequelize.close();
+    debug('Закрытие соединения с db');
+    process.exit(0);
+}
+async function User(){
+    debug('-----------------------------------------------------');
+    debUser('\n\nТест кнтроллера пользователя\n')
+    debug('-----------------------------------------------------');
+    
     // все пользователи
     test='1 getAll'
     await userController.getAll(req, res, next);
@@ -114,4 +153,33 @@ async function Things() {
     debug('-----------------------------------------------------');
     debThing('\n\nТест кнтроллера вещщи\n')
     debug('-----------------------------------------------------'); 
+    test='1 getAll'
+    // await thingController.getAll(req, res, next);
+
+    test='2 getById'
+    await thingController.getById(req, res, next);
+
+    test='3 getByUser'
+    await thingController.getByUser(req, res, next);
+
+    test='4 create'
+    // await thingController.create(req, res, next);
+
+    test='5 createMany'
+    // await thingController.createMany(req, res, next);
+
+    test='6 update'
+    // await thingController.update(req, res, next);
+
+    test='7 delete'
+    await thingController.delete(req, res, next);
+}
+async function Auth() {
+debug('-----------------------------------------------------');
+debAuth('\n\nТест кнтроллера пользователя\n')
+debug('-----------------------------------------------------');
+
+    test=1
+    await authController.signIn(req, res, next)
+    
 }

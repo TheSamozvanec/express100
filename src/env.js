@@ -5,6 +5,7 @@ const debug = debugLib('exp:src:env');
 const envSchema = z.object({
   NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
   PORT: z.coerce.number().default(3000),
+  HASH_SALT: z.coerce.number().min(4).max(14).default(10),
   COOKIE_SECRET: z.string().min(10),
   JWT_EXPIRES_IN: z.string().default("120m"),
   POSTGRES_USER: z.string().min(1),
