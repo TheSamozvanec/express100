@@ -4,6 +4,7 @@ import debugLib from "debug";
 const debug = debugLib('exp:src:env');
 const envSchema = z.object({
   NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
+  PROTOCOL: z.enum(["http", "https"]).default("http"),
   PORT: z.coerce.number().default(3000),
   HTTPS_PORT: z.coerce.number().default(3443),
   HASH_SALT: z.coerce.number().min(4).max(14).default(10),
@@ -13,6 +14,7 @@ const envSchema = z.object({
   POSTGRES_PASSWORD: z.string().min(1),
   POSTGRES_DB: z.string().min(1),
   POSTGRES_PORT: z.coerce.number().default(5432),
+  POSTGRES_HOST: z.string().default("localhost")
 });
 
 try {

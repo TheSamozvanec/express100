@@ -18,7 +18,7 @@ export const sequelize = new Sequelize(
     env.POSTGRES_USER,
     env.POSTGRES_PASSWORD,
     {
-        host:'localhost',
+        host:env.POSTGRES_HOST,
         port: env.POSTGRES_PORT,
         dialect: 'postgres',
         logging:(sql) => debugSQL(sql), // логирование можно выключить (false)
