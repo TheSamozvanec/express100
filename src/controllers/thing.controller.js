@@ -1,6 +1,6 @@
 import thingService from "../services/thing.service.js";
 import { ZodError } from "zod";
-import { thingShema, thingsShema } from "./shemes/thing.shemas.js";
+import { thingEditShema, thingShema, thingsShema } from "./shemes/thing.shemas.js";
 import debugLib from "debug";
 
 const debug = debugLib('exp:src:controller:--THING--')
@@ -47,7 +47,7 @@ class ThingController {
 
     update = async (req, res, next) => {
         try {
-            const validData = thingShema.parse(req.body);
+            const validData = thingEditShema.parse(req.body);
             validData.thing_id=req.params.id;
             const data = await thingService.update(req.user, validData);
             if (data.message) return this.#error(data.status, data, res, next);

@@ -49,8 +49,8 @@ export const setCookieJWT = (result, res) => {
     const {pingvin} = result;
     res.cookie('pingvin', pingvin, {
         httpOnly: true,   // Защита от XSS
-        secure: false,     // НЕ Только HTTPS
-        sameSite: 'strict', // Защита от CSRF
+        secure: true,     // Только HTTPS (для спокойной передачи куки)
+        sameSite: 'none', // Защита от CSRF
         maxAge: parseExpiresIn(env.JWT_EXPIRES_IN)   // парсер       
          });
 }

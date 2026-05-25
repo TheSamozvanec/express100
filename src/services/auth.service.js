@@ -17,7 +17,7 @@ class AuthService {
         const payload = found.toJSON();
         delete payload.password;
         const pingvin = getJWT(payload); // получить jwt (пользователь)
-        return {pingvin}
+        return {pingvin, payload}
     }
     
     async signOut (newUser) {

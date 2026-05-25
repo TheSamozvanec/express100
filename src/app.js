@@ -7,6 +7,7 @@ import debugLib from "debug";
 import { handlebars } from "./config/database.js";
 import userRouter from "./routes/user.routes.js";
 import authRouter from "./routes/auth.routes.js";
+import thingRouter from "./routes/thing.routes.js";
 import * as middlewares from "./middleware/middlewares.js";
 import __dirname from "../dirname.js"
 
@@ -17,7 +18,10 @@ debug('dirname:\n',__dirname);
 
 const app = express();
 app.use(morgan("dev"));
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000',  // Ваш фронт
+  credentials: true      
+}));
 app.use(express.json());
 
 app.set('views', path.join(__dirname, 'views'));
@@ -27,10 +31,11 @@ app.use(cookieParser()); // куки
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(middlewares.hasAuth);
-// app.use(middlewares.kostyl)
+//app.use(middlewares.kostyl)
 
 app.use('/api/auth',authRouter);
 app.use('/api/user',userRouter);
+app.use('/api/thing',thingRouter);
 
 app.get("/", (req, res) => {
   res.render('index');

@@ -11,8 +11,8 @@ class AuthController {
         try {
                 const result = await authService.signIn(req.body);
                 if (result?.message) return this.#error (401, result, res, next);
-                setCookieJWT(result,res);
-                res.send (req.body.login+' Авторизован');
+                setCookieJWT(result, res);
+                res.send ({user:result.payload, send:`${result.payload.login} авторизован!`});
         } catch (error) {this.#err500(error, res, next)}
     }
     signOut = async (req, res, next) => {
@@ -32,7 +32,12 @@ class AuthController {
 
     logaut = async (req, res, next) => {
         try {
-                res.clearCookie('pingvin');
+                res.clearCookie('pingvin',{
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none',
+            path: '/'
+        });
                 res.status(204).send();
         } catch (error) {this.#err500(error, res, next)}
     }

@@ -75,3 +75,7 @@ typings/
 docker-compose.yaml
 #temp
 text/
+# Сертификаты
+/certs/
+*.pem
+*.key

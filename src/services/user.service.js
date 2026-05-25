@@ -12,7 +12,7 @@ class UserService { // usr - только для выяснения прав
 
     async getUById(id, usr){
         let user
-        if (usr.is_admin || usr.user_id===id) {
+        if (usr.is_admin || +usr.user_id===+id) {
             user = await userRepository.getByIdAdm(id);
         } else {user = await userRepository.getById(id)};
         
@@ -33,6 +33,10 @@ class UserService { // usr - только для выяснения прав
             if (!user) throw {message:'Такого пользователя нет! (id)', status:404};
 
             if (userData.login && userData.login !==user.login){
+                debug('>>>>>>>>>>>userData',userData)
+                debug('>>>>>>>>>>>USER',user.toJSON())
+                debug('>>>>>>>>>>>>usr',usr)
+
                 const login = await userRepository.getByLogin(userData.login, transaction);
                 if(login) throw {message:'Такой пользователь уже есть! (login)', status:409};
             }
@@ -41,6 +45,7 @@ class UserService { // usr - только для выяснения прав
                 const email = await userRepository.getByEmail(userData.email, transaction);
                 if (email) throw {message:'Ящик уже занят! (email)', status:409};
             }
+
             if (!usr.is_admin) userData.is_admin=false;
             const newUser = await userRepository.update(id, userData, transaction);
             await transaction.commit();
@@ -63,7 +68,7 @@ class UserService { // usr - только для выяснения прав
     }
 
     async getUserWithThings(id,usr) {
-        if (usr.user_id!==id && !usr.is_admin) return {message:'Доступ запрещен!!!'}
+        if (+usr.user_id!==+id && !usr.is_admin) return {message:'Доступ запрещен!!!'}
         return (await userRepository.getUserWithThings(id))?.toJSON();
     }
 

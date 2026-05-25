@@ -33,7 +33,7 @@ class ThingService {
             if(user_id) return {name, description, user_id} 
             return {name, description, user_id:id}
         });
-        const idArray = [...new Set(thingsArray.map(t=>t.user_id))];
+        const idArray = [...new Set(result.map(t=>t.user_id))];
         const hasIds = (await userRepository.chekUsers(idArray))?.map(h=>h.user_id);
         const missingIds = idArray.filter(id=> !hasIds.includes(id));
         if (missingIds.length>0) return {message:'Нет пользователей с ID: ' + missingIds.join(', ')}

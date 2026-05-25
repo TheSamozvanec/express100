@@ -42,7 +42,12 @@ class UserController {
         try {
             const result = await userService.delete(req.params.id, req.user);
             if (result.message) return this.#error(result.status, result, res, next);
-            if(+req.user.user_id===+req.params.id) res.clearCookie('pingvin');
+            if(+req.user.user_id===+req.params.id) res.clearCookie('pingvin',{
+                httpOnly: true,
+                secure: true,
+                sameSite: 'none',
+                path: '/'
+            });
             return res.json(result);
         } catch(error) {this.#err500(error, res, next)}
     }
