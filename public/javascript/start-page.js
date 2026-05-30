@@ -34,3 +34,4 @@ test.addEventListener('click', async ()=>{
         console.log(list);
     } catch (err) {error.textContent=err}
 })
+// test
