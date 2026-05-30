@@ -15,12 +15,28 @@ const debug = debugLib('exp:src:--APP--');
 //____________________________
 debug('dirname:\n',__dirname);
 //____________________________
-
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:5173',
+  'http://localhost:8000',
+  'https://semov777.com',
+  'https://www.semov777.com',
+  'https://poligon.semov777.com'
+];
 const app = express();
 app.use(morgan("dev"));
 app.use(cors({
-  origin: 'http://localhost:3000',  // Ваш фронт
-  credentials: true      
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('CORS not allowed from this origin'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Cookie']      
 }));
 app.use(express.json());
 
@@ -38,7 +54,7 @@ app.use('/api/user',userRouter);
 app.use('/api/thing',thingRouter);
 
 app.get("/", (req, res) => {
-  res.render('index');
+  res.render('index',{script:'/javascript/start-page.js'});
 });
 
 
